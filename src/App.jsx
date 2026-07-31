@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { books } from './models/Book'
 import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
@@ -11,6 +11,21 @@ function App() {
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.trim().toLowerCase()),
   )
+
+  useEffect(() => {
+    const imageUrls = Array.from(
+      new Set(
+        books.flatMap((book) => [book.cover, book.wall]).filter(Boolean),
+      ),
+    )
+
+    imageUrls.forEach((url) => {
+      const image = new Image()
+      image.decoding = 'async'
+      image.loading = 'eager'
+      image.src = url
+    })
+  }, [])
 
   const openBookDetails = (book) => {
     setActiveBook(book)
