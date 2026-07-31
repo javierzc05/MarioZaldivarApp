@@ -4,6 +4,27 @@ import { books } from './models/Book'
 import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
 
+const toSlug = (title) =>
+  title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+
+const findBookBySlug = (slug) => books.find((book) => toSlug(book.title) === slug)
+
+const getBookFromHash = () => {
+  const match = window.location.hash.match(/^#\/book\/([^/?#]+)/)
+
+  if (!match) {
+    return null
+  }
+
+  const slug = decodeURIComponent(match[1])
+  return findBookBySlug(slug) ?? null
+}
+
 function App() {
   const [activeBook, setActiveBook] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
@@ -27,11 +48,35 @@ function App() {
     })
   }, [])
 
+  useEffect(() => {
+    const syncBookFromHash = () => {
+      setActiveBook(getBookFromHash())
+    }
+
+    syncBookFromHash()
+    window.addEventListener('hashchange', syncBookFromHash)
+
+    return () => {
+      window.removeEventListener('hashchange', syncBookFromHash)
+    }
+  }, [])
+
   const openBookDetails = (book) => {
+    const targetHash = `#/book/${encodeURIComponent(toSlug(book.title))}`
+
+    if (window.location.hash !== targetHash) {
+      window.location.hash = targetHash
+      return
+    }
+
     setActiveBook(book)
   }
 
   const closeBookDetails = () => {
+    if (window.location.hash.startsWith('#/book/')) {
+      window.location.hash = ''
+    }
+
     setActiveBook(null)
   }
 
