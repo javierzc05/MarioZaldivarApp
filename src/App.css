@@ -5,9 +5,6 @@
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
   padding: 18px 24px;
   display: flex;
   justify-content: space-between;
