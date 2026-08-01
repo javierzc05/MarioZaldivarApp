@@ -155,7 +155,7 @@ function App() {
               type="text"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Buscar por titulo"
+              placeholder="Buscar por título"
             />
           </label>
         </div>
