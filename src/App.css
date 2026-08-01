@@ -127,8 +127,8 @@
 
 .wall-content h2 {
   margin: 0;
-  font-size: clamp(1.3rem, 3vw, 2.4rem);
-  line-height: 1.02;
+  font-size: clamp(1.1rem, 3vw, 2.4rem);
+  line-height: 1.01;
   text-wrap: balance;
 }
 
