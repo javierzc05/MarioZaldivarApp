@@ -29,6 +29,23 @@
   color: rgba(245, 242, 233, 0.74);
 }
 
+.about-me {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 242, 233, 0.74);
+  font: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.about-me:hover {
+  color: #f4c175;
+}
+
 .site-header h1 {
   margin: 0;
   font-size: clamp(1.6rem, 3vw, 2.2rem);
@@ -283,6 +300,109 @@
   background: linear-gradient(135deg, #25d366, #16a34a);
   color: #061108;
   box-shadow: 0 10px 24px rgba(37, 211, 102, 0.35);
+}
+
+.about-me-page {
+  min-height: 100vh;
+  padding: 28px 22px;
+}
+
+.about-me-shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.about-me-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.about-me-back {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8f5ef;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.about-me-kicker {
+  margin: 0;
+  color: rgba(248, 245, 239, 0.72);
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.about-me-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  background: rgba(18, 15, 22, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.about-me-photo {
+  width: 100%;
+  max-width: 520px;
+  object-fit: cover;
+  border-radius: 0;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
+}
+
+.about-me-copy h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.02;
+  text-align: center;
+}
+
+.about-me-copy {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.about-me-copy p {
+  margin: 0;
+  color: rgba(248, 245, 239, 0.86);
+  line-height: 1.75;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+@media (max-width: 900px) {
+  .about-me-content {
+    padding: 24px;
+  }
+
+  .about-me-photo {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-me-page {
+    padding: 16px 10px;
+  }
+
+  .about-me-header {
+    justify-content: flex-start;
+  }
+
+  .about-me-content {
+    padding: 20px;
+  }
 }
 
 .contact-button.facebook,

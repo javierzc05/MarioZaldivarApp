@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { books } from './models/Book'
 import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
+import AboutMe from './components/AboutMe'
 
 const toSlug = (title) =>
   title
@@ -28,6 +29,7 @@ const getBookFromHash = () => {
 function App() {
   const [activeBook, setActiveBook] = useState(null)
   const [bookToFocus, setBookToFocus] = useState(null)
+  const [showAboutMe, setShowAboutMe] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
 
   const filteredBooks = books.filter((book) =>
@@ -75,6 +77,11 @@ function App() {
     setActiveBook(book)
   }
 
+  const openAboutMe = () => {
+    setShowAboutMe(true)
+    setActiveBook(null)
+  }
+
   const closeBookDetails = () => {
     if (window.history.state?.bookSlug) {
       window.history.back()
@@ -84,6 +91,10 @@ function App() {
     setBookToFocus(activeBook ? toSlug(activeBook.title) : window.sessionStorage.getItem('lastBookSlug'))
     window.location.hash = ''
     setActiveBook(null)
+  }
+
+  const closeAboutMe = () => {
+    setShowAboutMe(false)
   }
 
   useEffect(() => {
@@ -103,6 +114,14 @@ function App() {
     setBookToFocus(null)
   }, [activeBook, bookToFocus])
 
+  if (showAboutMe) {
+    return (
+      <main className="landing">
+        <AboutMe onClose={closeAboutMe} />
+      </main>
+    )
+  }
+
   if (activeBook) {
     return (
       <main className="landing">
@@ -119,7 +138,16 @@ function App() {
     <main className="landing">
       <header className="site-header">
         <div className="header-copy">
-          <p>Mario Zaldívar</p>
+          <a
+            href="#about-me"
+            className="about-me"
+            onClick={(event) => {
+              event.preventDefault()
+              openAboutMe()
+            }}
+          >
+            Mario Zaldívar
+          </a>
 
           <label className="header-filter" htmlFor="book-filter-input">
             <input
