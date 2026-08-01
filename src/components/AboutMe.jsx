@@ -43,6 +43,16 @@ function AboutMe({ onClose }) {
               surrealista.
             </p>
           </div>
+          <br />
+          <div className="about-me-contact">
+            <h3>Contacto:</h3>
+             <a
+                href={`https://wa.me/50689217025`}
+                target="_blank"
+                rel="noreferrer"
+              >+506 89217025</a>
+            <a href="mailto:mazalri22@gmail.com">mazalri22@gmail.com</a>
+          </div>
         </article>
       </div>
     </article>

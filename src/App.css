@@ -127,8 +127,8 @@
 
 .wall-content h2 {
   margin: 0;
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
-  line-height: 1.04;
+  font-size: clamp(1.3rem, 3vw, 2.4rem);
+  line-height: 1.02;
   text-wrap: balance;
 }
 
@@ -378,6 +378,32 @@
   line-height: 1.75;
   text-align: justify;
   text-justify: inter-word;
+}
+
+.about-me-contact {
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+}
+
+.about-me-contact h3 {
+  margin: 0;
+  color: #f8f5ef;
+  font-size: 1.1rem;
+}
+
+.about-me-contact a {
+  color: rgba(248, 245, 239, 0.86);
+  text-decoration: none;
+}
+
+.about-me-contact a:hover {
+  color: #f8f5ef;
+  text-decoration: underline;
 }
 
 @media (max-width: 900px) {
