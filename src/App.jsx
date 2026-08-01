@@ -27,6 +27,7 @@ const getBookFromHash = () => {
 
 function App() {
   const [activeBook, setActiveBook] = useState(null)
+  const [bookToFocus, setBookToFocus] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
 
   const filteredBooks = books.filter((book) =>
@@ -49,36 +50,58 @@ function App() {
   }, [])
 
   useEffect(() => {
-    const syncBookFromHash = () => {
-      setActiveBook(getBookFromHash())
+    const syncBookFromLocation = () => {
+      const bookFromHash = getBookFromHash()
+
+      setActiveBook(bookFromHash)
+
+      if (!bookFromHash && window.history.state?.bookSlug) {
+        setBookToFocus(window.history.state.bookSlug)
+      }
     }
 
-    syncBookFromHash()
-    window.addEventListener('hashchange', syncBookFromHash)
+    syncBookFromLocation()
+    window.addEventListener('popstate', syncBookFromLocation)
 
     return () => {
-      window.removeEventListener('hashchange', syncBookFromHash)
+      window.removeEventListener('popstate', syncBookFromLocation)
     }
   }, [])
 
   const openBookDetails = (book) => {
-    const targetHash = `#/book/${encodeURIComponent(toSlug(book.title))}`
-
-    if (window.location.hash !== targetHash) {
-      window.location.hash = targetHash
-      return
-    }
-
+    const bookSlug = toSlug(book.title)
+    window.history.pushState({ bookSlug }, '', `#/book/${encodeURIComponent(bookSlug)}`)
+    window.sessionStorage.setItem('lastBookSlug', bookSlug)
     setActiveBook(book)
   }
 
   const closeBookDetails = () => {
-    if (window.location.hash.startsWith('#/book/')) {
-      window.location.hash = ''
+    if (window.history.state?.bookSlug) {
+      window.history.back()
+      return
     }
 
+    setBookToFocus(activeBook ? toSlug(activeBook.title) : window.sessionStorage.getItem('lastBookSlug'))
+    window.location.hash = ''
     setActiveBook(null)
   }
+
+  useEffect(() => {
+    if (activeBook || !bookToFocus) {
+      return
+    }
+
+    const targetId = bookToFocus
+    const targetElement = document.getElementById(targetId)
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ block: 'start', behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    setBookToFocus(null)
+  }, [activeBook, bookToFocus])
 
   if (activeBook) {
     return (
@@ -114,7 +137,12 @@ function App() {
 
       <div className="walls" aria-label="Books landing sections">
         {filteredBooks.map((book) => (
-          <section className="wall-section" key={book.title} style={{ backgroundImage: `url(${book.wall})` }}>
+          <section
+            className="wall-section"
+            key={book.title}
+            id={toSlug(book.title)}
+            style={{ backgroundImage: `url(${book.wall})` }}
+          >
             <div className="wall-overlay" />
             <div
               className={`wall-content wall-content--${book.coverAlign === 'left' ? 'right' : 'left'}`}
