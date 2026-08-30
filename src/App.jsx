@@ -5,7 +5,7 @@ import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
 import AboutMe from './components/AboutMe'
 
-const SKELETON_DURATION_MS = 1500
+const SKELETON_MAX_DURATION_MS = 4000
 
 const toSlug = (title) =>
   title
@@ -40,26 +40,37 @@ function App() {
   )
 
   useEffect(() => {
-    const loadingTimer = window.setTimeout(() => {
-      setIsLoading(false)
-    }, SKELETON_DURATION_MS)
-
-    return () => window.clearTimeout(loadingTimer)
-  }, [])
-
-  useEffect(() => {
+    let isMounted = true
     const imageUrls = Array.from(
       new Set(
         books.flatMap((book) => [book.cover, book.wall]).filter(Boolean),
       ),
     )
 
-    imageUrls.forEach((url) => {
+    const imageLoads = imageUrls.map((url) => new Promise((resolve) => {
       const image = new Image()
-      image.decoding = 'async'
-      image.loading = 'eager'
+      image.onload = resolve
+      image.onerror = resolve
       image.src = url
+
+      if (image.complete) {
+        resolve()
+      }
+    }))
+
+    const maximumWait = new Promise((resolve) => {
+      window.setTimeout(resolve, SKELETON_MAX_DURATION_MS)
     })
+
+    Promise.race([Promise.all(imageLoads), maximumWait]).then(() => {
+      if (isMounted) {
+        setIsLoading(false)
+      }
+    })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   useEffect(() => {
