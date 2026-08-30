@@ -210,6 +210,7 @@ function App() {
             key={book.title}
             id={toSlug(book.title)}
             style={{ backgroundImage: `url(${book.wall})` }}
+            onClick={() => openBookDetails(book)}
           >
             <div className="wall-overlay" />
             <div
@@ -219,7 +220,14 @@ function App() {
               <p className="wall-tag">{book.tag}</p>
               <p className="wall-description">{book.description}</p>
               <p className="wall-price">Precio: {book.price}</p>
-              <button type="button" className="details-button" onClick={() => openBookDetails(book)}>
+              <button
+                type="button"
+                className="details-button"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  openBookDetails(book)
+                }}
+              >
                 Comprar Libro
               </button>
             </div>
