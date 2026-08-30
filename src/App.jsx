@@ -5,7 +5,7 @@ import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
 import AboutMe from './components/AboutMe'
 
-const SKELETON_MAX_DURATION_MS = 4000
+const SKELETON_MAX_DURATION_MS = 3000
 
 const toSlug = (title) =>
   title
