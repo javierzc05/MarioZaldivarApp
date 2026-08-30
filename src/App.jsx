@@ -5,6 +5,8 @@ import whatsappIcon from './assets/whatsapp.png'
 import BookDetails from './components/BookDetails'
 import AboutMe from './components/AboutMe'
 
+const SKELETON_DURATION_MS = 1500
+
 const toSlug = (title) =>
   title
     .toLowerCase()
@@ -27,6 +29,7 @@ const getBookFromHash = () => {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true)
   const [activeBook, setActiveBook] = useState(null)
   const [bookToFocus, setBookToFocus] = useState(null)
   const [showAboutMe, setShowAboutMe] = useState(false)
@@ -35,6 +38,14 @@ function App() {
   const filteredBooks = books.filter((book) =>
     book.title.toLowerCase().includes(searchTerm.trim().toLowerCase()),
   )
+
+  useEffect(() => {
+    const loadingTimer = window.setTimeout(() => {
+      setIsLoading(false)
+    }, SKELETON_DURATION_MS)
+
+    return () => window.clearTimeout(loadingTimer)
+  }, [])
 
   useEffect(() => {
     const imageUrls = Array.from(
@@ -111,8 +122,37 @@ function App() {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
-    setBookToFocus(null)
+    const resetFocusFrame = window.requestAnimationFrame(() => {
+      setBookToFocus(null)
+    })
+
+    return () => window.cancelAnimationFrame(resetFocusFrame)
   }, [activeBook, bookToFocus])
+
+  if (isLoading) {
+    return (
+      <main className="skeleton-page" aria-busy="true" aria-label="Cargando contenido">
+        <span className="sr-only" role="status">Cargando libros publicados</span>
+        <header className="skeleton-header">
+          <div className="skeleton-line skeleton-line--author" />
+          <div className="skeleton-line skeleton-line--search" />
+          <div className="skeleton-line skeleton-line--title" />
+        </header>
+        <div className="skeleton-books" aria-hidden="true">
+          {[0, 1].map((item) => (
+            <section className="skeleton-book" key={item}>
+              <div className="skeleton-book-copy">
+                <div className="skeleton-line skeleton-line--book-title" />
+                <div className="skeleton-line skeleton-line--text" />
+                <div className="skeleton-line skeleton-line--text-short" />
+                <div className="skeleton-line skeleton-line--button" />
+              </div>
+            </section>
+          ))}
+        </div>
+      </main>
+    )
+  }
 
   if (showAboutMe) {
     return (
