@@ -1,4 +1,58 @@
+import { useEffect, useState } from 'react'
+
+const DETAILS_SKELETON_DURATION_MS = 1200
+const DETAILS_VISITED_SESSION_KEY = 'bookDetailsVisited'
+
 function BookDetails({ book, onClose, whatsappIcon }) {
+  const [isLoading, setIsLoading] = useState(
+    () => window.sessionStorage.getItem(DETAILS_VISITED_SESSION_KEY) !== 'true',
+  )
+
+  useEffect(() => {
+    if (!isLoading) {
+      return
+    }
+
+    window.sessionStorage.setItem(DETAILS_VISITED_SESSION_KEY, 'true')
+
+    const loadingTimer = window.setTimeout(() => {
+      setIsLoading(false)
+    }, DETAILS_SKELETON_DURATION_MS)
+
+    return () => window.clearTimeout(loadingTimer)
+  }, [isLoading])
+
+  if (isLoading) {
+    return (
+      <section
+        className="book-details-page"
+        aria-busy="true"
+        aria-label="Cargando detalles del libro"
+      >
+        <span className="sr-only" role="status">Cargando detalles del libro</span>
+        <div className="book-details-shell" aria-hidden="true">
+          <header className="book-details-header">
+            <div className="skeleton-line details-skeleton-back" />
+            <div className="skeleton-line details-skeleton-kicker" />
+          </header>
+
+          <div className="book-details-content details-skeleton-content">
+            <div className="details-skeleton-cover" />
+            <div className="details-skeleton-copy">
+              <div className="skeleton-line details-skeleton-title" />
+              <div className="skeleton-line details-skeleton-tag" />
+              <div className="skeleton-line details-skeleton-price" />
+              <div className="skeleton-line details-skeleton-text" />
+              <div className="skeleton-line details-skeleton-text" />
+              <div className="skeleton-line details-skeleton-text-short" />
+              <div className="skeleton-line details-skeleton-action" />
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className="book-details-page" aria-label="Book details page">
       <div className="book-details-shell">
