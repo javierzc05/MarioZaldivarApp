@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 const DETAILS_SKELETON_DURATION_MS = 1200
 const DETAILS_VISITED_SESSION_KEY = 'bookDetailsVisited'
@@ -7,6 +7,10 @@ function BookDetails({ book, onClose, whatsappIcon }) {
   const [isLoading, setIsLoading] = useState(
     () => window.sessionStorage.getItem(DETAILS_VISITED_SESSION_KEY) !== 'true',
   )
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     if (!isLoading) {
