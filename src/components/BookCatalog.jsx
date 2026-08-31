@@ -1,10 +1,19 @@
 import BookEmptyState from './BookEmptyState'
 import BookSection from './BookSection'
 
+const normalizeSearchTerm = (value) =>
+  value
+    .trim()
+    .toLowerCase()
+    // Split accented letters into a base letter and its diacritic marks (for example, "ú" becomes "u" + accent).
+    .normalize('NFD')
+    // Remove every Unicode diacritic, including accents, umlauts, tildes, and standalone marks.
+    .replace(/\p{Diacritic}/gu, '')
+
 function BookCatalog({ books, searchTerm, onOpenBook }) {
-  const normalizedSearchTerm = searchTerm.trim().toLowerCase()
+  const normalizedSearchTerm = normalizeSearchTerm(searchTerm)
   const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(normalizedSearchTerm),
+    normalizeSearchTerm(book.title).includes(normalizedSearchTerm),
   )
 
   return (
