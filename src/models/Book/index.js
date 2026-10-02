@@ -13,6 +13,7 @@ import otto_vargas_wall from '../../assets/otto_vargas_wall.png'
 import aquellos_salones_de_baile_wall from '../../assets/aquellos_salones_de_baile_wall.png'
 import mario_chacon_wall from '../../assets/mario_chacon_wall.png'
 import tu_nombre_tiene_musica_wall from '../../assets/tu_nombre_tiene_musica_wall.png'
+import _300_cantinas_wall from '../../assets/300_cantinas_wall.png'
 
 // Covers
 import gilberto_hernandez_cover from '../../assets/gilberto_hernandez_cover.jpg'
@@ -29,10 +30,21 @@ import otto_vargas_cover from '../../assets/otto_vargas_cover.jpg'
 import aquellos_salones_de_baile_cover from '../../assets/aquellos_salones_de_baile_cover.jpg'
 import mario_chacon_cover from '../../assets/mario_chacon_cover.jpg'
 import tu_nombre_tiene_musica_cover from '../../assets/tu_nombre_tiene_musica_cover.jpg'
+import _300_cantinas_cover from '../../assets/300_cantinas_cover.jpg'
 
 const standardPrice = '₡10 000'
 
 export const books = [
+  {
+    title: '300 Cantinas Antiguas',
+    tag: 'Historia',
+    description:
+        'A finales de septiembre tendremos un nuevo tiraje del libro 300 Cantinas antiguas de Costa Rica, como respuesta a una gran cantidad de solicitudes de personas interesadas en esta obra. El libro de cantinas ha tenido una sorprendente acogida en el público, por ser la primera publicación de materia, por la riqueza histórica de la fotografía y el enfoque sociológico que se le imprimió a la obra.',
+    price: '₡15 000',
+    wall: _300_cantinas_wall,
+    cover: _300_cantinas_cover,
+    coverAlign: 'right',
+  },
   {
     title: 'Tu nombre tiene música',
     tag: 'Recopilación',
